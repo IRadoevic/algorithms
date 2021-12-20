@@ -320,3 +320,9 @@ int main()
  
     return 0;
 }
+======================================================================================================================================================================================
+Johnsoh je isti kao floyd-warshall ili djikstra samo sto moze i za negative values pa mora to da se sredi (pogledati na g4g).
+======================================================================================================================================================================================
+Articulation points su kljucne tacke koje bi cepale graph na 2 ili vise. Ima alg na g4g videti i ulogu.
+======================================================================================================================================================================================
+Bridges je isto kao articulation points samo sa granama. Ima kod na g4g. Naci primenu i implementaciju.
