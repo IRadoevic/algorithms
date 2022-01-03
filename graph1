@@ -1,7 +1,8 @@
 # graph
 
 
-#BFS and DFS        /// 
+#BFS and DFS        /// (BFS: shortest path unweighted, neighbors, cycles directed, are vertices connected, reachable nodes), 
+(DFS: cycles undirected, path-finding/are nodes connected, strongly connected graph = svaki sa svakim, one solution)
 #include <bits/stdc++.h>
 
 using namespace std;
