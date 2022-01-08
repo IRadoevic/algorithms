@@ -149,6 +149,8 @@ int main()
 }
 ======================================================================================================================================================================================
 Partition into two subsets (min abs difference)
+video partition problema - https://www.youtube.com/watch?v=n3LS2p7xoE8  korisno od 7. minuta
+logicna je implementacija ovoga za nas problem 
 // A Recursive C program to solve minimum sum partition
 // problem.
 #include <bits/stdc++.h>
@@ -212,3 +214,5 @@ int main()
          << findMin(arr, n);
     return 0;
 }
+======================================================================================================================================================================================
+
