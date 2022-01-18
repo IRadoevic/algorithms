@@ -1,4 +1,4 @@
-Longest path in a matrix with given constraints
+Longest path in a matrix
 // C++ program to find the longest path in a matrix
 // with given constraints
 #include <bits/stdc++.h>
@@ -32,10 +32,106 @@ int findLongestFromACell(int i, int j, int mat[n][n], int dp[n][n])
 
     if (i < n - 1 && (mat[i][j] + 1 == mat[i + 1][j]))
         w = 1 + findLongestFromACell(i + 1, j, mat, dp);
+
+    // If none of the adjacent fours is one greater we will take 1
+    // otherwise we will pick maximum from all the four directions
+    return dp[i][j] = max(x, max(y, max(z, max(w, 1))));
+}
+
+// Returns length of the longest path beginning with any cell
+int finLongestOverAll(int mat[n][n])
+{
+    int result = 1; // Initialize result
+
+    // Create a lookup table and fill all entries in it as -1
+    int dp[n][n];
+    memset(dp, -1, sizeof dp);
+
+    // Compute longest path beginning from all cells
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            if (dp[i][j] == -1)
+                findLongestFromACell(i, j, mat, dp);
+
+            // Update result if needed
+            result = max(result, dp[i][j]);
+        }
+    }
+
+    return result;
+}
+
+// Driver program
+int main()
+{
+    int mat[n][n] = { { 1, 2, 9 },
+                      { 5, 3, 8 },
+                      { 4, 6, 7 } };
+    cout << "Length of the longest path is "
+         << finLongestOverAll(mat);
+    return 0;
+}
+======================================================================================================================================================================================
+Subset sum problem
+// A Dynamic Programming solution
+// for subset sum problem
+#include <iostream>
+using namespace std;
+
+// Returns true if there is a subset of set[]
+// with sum equal to given sum
+bool isSubsetSum(int set[], int n, int sum)
+{
+    // The value of subset[i][j] will be true if
+    // there is a subset of set[0..j-1] with sum
+    // equal to i
+    bool subset[n + 1][sum + 1];
+
+    // If sum is 0, then answer is true
+    for (int i = 0; i <= n; i++)
+        subset[i][0] = true;
+
+    // If sum is not 0 and set is empty,
+    // then answer is false
+    for (int i = 1; i <= sum; i++)
+        subset[0][i] = false;
+
+    // Fill the subset table in bottom up manner
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= sum; j++) {
+            if (j < set[i - 1])
+                subset[i][j] = subset[i - 1][j];
+            if (j >= set[i - 1])
+                subset[i][j] = subset[i - 1][j]
+                               || subset[i - 1][j - set[i - 1]];
+        }
+    }
+
+    /*   // uncomment this code to print table
+     for (int i = 0; i <= n; i++)
+     {
+       for (int j = 0; j <= sum; j++)
+          printf ("%4d", subset[i][j]);
+       cout <<"\n";
+     }*/
+
+    return subset[n][sum];
+}
+
+// Driver code
+int main()
+{
+    int set[] = { 3, 34, 4, 12, 5, 2 };
+    int sum = 9;
+    int n = sizeof(set) / sizeof(set[0]);
+    if (isSubsetSum(set, n, sum) == true)
+        cout <<"Found a subset with given sum";
+    else
+        cout <<"No subset with given sum";
+    return 0;
+}
 ======================================================================================================================================================================================
 Optimal strategy for a game
-https://www.youtube.com/watch?v=WxpIHvsu1RI
-
 // C++ program to find out
 // maximum value from a given
 // sequence of coins
@@ -106,101 +202,33 @@ int main()
     return 0;
 }
 ======================================================================================================================================================================================
-Subset sum problem
-//same video as in the minimum partition problem
-// A Dynamic Programming solution
-// for subset sum problem
-#include <iostream>
+0-1 Knapsack problem
+#include <bits/stdc++.h>
 using namespace std;
-
-// Returns true if there is a subset of set[]
-// with sum equal to given sum
-bool isSubsetSum(int set[], int n, int sum)
+int knapSack(int W, int wt[], int val[], int n)
 {
-    // The value of subset[i][j] will be true if
-    // there is a subset of set[0..j-1] with sum
-    // equal to i
-    bool subset[n + 1][sum + 1];
-
-    // If sum is 0, then answer is true
-    for (int i = 0; i <= n; i++)
-        subset[i][0] = true;
-
-    // If sum is not 0 and set is empty,
-    // then answer is false
-    for (int i = 1; i <= sum; i++)
-        subset[0][i] = false;
-
-    // Fill the subset table in bottom up manner
-    for (int i = 1; i <= n; i++) {
-        for (int j = 1; j <= sum; j++) {
-            if (j < set[i - 1])
-                subset[i][j] = subset[i - 1][j];
-            if (j >= set[i - 1])
-                subset[i][j] = subset[i - 1][j]
-                               || subset[i - 1][j - set[i - 1]];
+    // making and initializing dp array
+    int dp[W + 1];
+    memset(dp, 0, sizeof(dp));
+ 
+    for (int i = 1; i < n + 1; i++) {
+        for (int w = W; w >= 0; w--) {
+ 
+            if (wt[i - 1] <= w)
+                // finding the maximum value
+                dp[w] = max(dp[w],
+                            dp[w - wt[i - 1]] + val[i - 1]);
         }
     }
-
-    /*   // uncomment this code to print table
-     for (int i = 0; i <= n; i++)
-     {
-       for (int j = 0; j <= sum; j++)
-          printf ("%4d", subset[i][j]);
-       cout <<"\n";
-     }*/
-
-    return subset[n][sum];
+    return dp[W]; // returning the maximum value of knapsack
 }
-
-// Driver code
 int main()
 {
-    int set[] = { 3, 34, 4, 12, 5, 2 };
-    int sum = 9;
-    int n = sizeof(set) / sizeof(set[0]);
-    if (isSubsetSum(set, n, sum) == true)
-        cout <<"Found a subset with given sum";
-    else
-        cout <<"No subset with given sum";
-    return 0;
-}
-    // If none of the adjacent fours is one greater we will take 1
-    // otherwise we will pick maximum from all the four directions
-    return dp[i][j] = max(x, max(y, max(z, max(w, 1))));
-}
-
-// Returns length of the longest path beginning with any cell
-int finLongestOverAll(int mat[n][n])
-{
-    int result = 1; // Initialize result
-
-    // Create a lookup table and fill all entries in it as -1
-    int dp[n][n];
-    memset(dp, -1, sizeof dp);
-
-    // Compute longest path beginning from all cells
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            if (dp[i][j] == -1)
-                findLongestFromACell(i, j, mat, dp);
-
-            // Update result if needed
-            result = max(result, dp[i][j]);
-        }
-    }
-
-    return result;
-}
-
-// Driver program
-int main()
-{
-    int mat[n][n] = { { 1, 2, 9 },
-                      { 5, 3, 8 },
-                      { 4, 6, 7 } };
-    cout << "Length of the longest path is "
-         << finLongestOverAll(mat);
+    int val[] = { 60, 100, 120 };
+    int wt[] = { 10, 20, 30 };
+    int W = 50;
+    int n = sizeof(val) / sizeof(val[0]);
+    cout << knapSack(W, wt, val, n);
     return 0;
 }
 ======================================================================================================================================================================================
