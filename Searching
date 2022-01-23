@@ -433,3 +433,6 @@ int main()
     return 0;
 }
 ======================================================================================================================================================================================
+Longest palindromic substring
+https://www.youtube.com/watch?v=UflHuQj6MVA      video of the DP solution
+//need to write the code myself
